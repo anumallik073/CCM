@@ -5,8 +5,6 @@ const routes = [
     path: '/',
     component: () => import('src/layouts/home/layout.vue'),
     beforeEnter: (to, from, next) => {
-      // Store().getters['auth/getPages'].filter(val=> val.pageUrl)
-      console.log(Store().getters['auth/getPages']);
       if (Store().getters['auth/getToken'] == '') {
         next('/auth/')
       }      
@@ -32,7 +30,7 @@ const routes = [
           { path: '', component: () => import('pages/products/suppliers.vue') },
           { path: 'subscriptions', component: () => import('pages/products/subscriptions.vue') }]
       },
-
+      { path: 'profile', component: () => import('pages/profile/profile.vue') }
     ]
   },
   {

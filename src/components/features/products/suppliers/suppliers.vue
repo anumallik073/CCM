@@ -1,7 +1,8 @@
 <template>
-  <div class="q-gutter-sm settingsDiv ">
-    <div class="">      
+  <div class="q-pa-md q-gutter-sm settingsDiv">
+    <div class="">
       <q-table
+        class="box-shadow"
         title="Suppliers"
         :rows="rows"
         :columns="columns"
@@ -13,11 +14,12 @@
       >
         <template v-slot:top-right>
           <q-input
-            borderless
+            outlined
             dense
             debounce="300"
             v-model="filter"
             placeholder="Search"
+            style="min-width: 300px;"
           >
             <template v-slot:append>
               <q-icon name="search" />
@@ -95,7 +97,7 @@ export default {
     const $store = useStore();
     const $q = useQuasar();
     onBeforeMount(() => {
-        $store.dispatch('products/getSubscribedSuppliers')
+      $store.dispatch("products/getSubscribedSuppliers");
     });
     return {
       filter: ref(""),
@@ -109,7 +111,7 @@ export default {
       getColor: (value) => (value ? "light-green-2" : "red-2"),
       getLabel: (value) => (value ? "Yes" : "No"),
       getTextColor: (value) => (value ? "green-10" : "red-10"),
-      
+
       // exportTable () {
       //   // naive encoding to csv format
       //   const content = [columns.map(col => wrapCsvValue(col.label))].concat(

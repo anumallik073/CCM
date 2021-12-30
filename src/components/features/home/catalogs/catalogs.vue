@@ -2,18 +2,20 @@
   <div class="q-pa-md q-gutter-sm catalogsDiv">
     <div class="">
       <q-table
+        class="box-shadow catalogs-table"
         title="Catalogs"
+        title-class="text-h6 primary-text"
         :rows="rows"
         :columns="columns"
         :filter="filter"
         row-key="name"
         no-data-label="I didn't find anything for you"
         no-results-label="The filter didn't uncover any results"
-        binary-state-sort
       >
         <template v-slot:top-right>
           <q-input
-            borderless
+            style="min-width: 300px"
+            outlined
             dense
             debounce="300"
             v-model="filter"
@@ -23,7 +25,21 @@
               <q-icon name="search" />
             </template>
           </q-input>
-        </template>        
+        </template>
+        <template v-slot:header-cell="props">
+          <q-th :props="props">
+            {{ props.col.label }}
+            <q-btn-dropdown
+              size="xs"
+              unelevated
+              flat
+              padding="6px"
+              dropdown-icon="mdi-filter"
+            >
+              <colFilter></colFilter>
+            </q-btn-dropdown>
+          </q-th>
+        </template>
         <template v-slot:body="props">
           <q-tr :props="props">
             <q-td key="img" :props="props">
@@ -55,7 +71,7 @@
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
+<style lang="scss">
 </style>
 <script>
 import { ref, computed, onBeforeMount } from "vue";
@@ -63,11 +79,14 @@ import { useStore } from "vuex";
 import { useQuasar } from "quasar";
 
 export default {
+  components: {
+    colFilter: require("src/components/restate/filter/filter.vue").default,
+  },
   setup() {
     const $store = useStore();
     const $q = useQuasar();
     onBeforeMount(() => {
-      $store.dispatch('home/getCatalogDetails')
+      $store.dispatch("home/getCatalogDetails");
     });
 
     return {

@@ -1,5 +1,5 @@
 <template>
-  <div class="q-py-md q-gutter-y-md background-color">
+  <div class="q-pa-md q-gutter-y-md background-color">
     <overview></overview>
     <catalogs></catalogs>
   </div>

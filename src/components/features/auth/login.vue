@@ -30,6 +30,10 @@
         lazy-rules
         :rules="[ val => !!val || 'UserName is missing' ]"
       /> 
+      <!-- <text-box
+      :name.sync="username">
+      ref="userName"
+      </text-box> -->
       <q-input
         square outlined
         ref="passwordRef"
@@ -66,8 +70,12 @@ import { useQuasar } from 'quasar'
 import { ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
+import sha256 from 'crypto-js/sha256' 
 
 export default {
+  components:{
+    'text-box' : require('../../restate/input/textbox').default
+  },
   setup () {
     const $store = useStore()
     const $q = useQuasar()
@@ -80,7 +88,8 @@ export default {
       username,
       password,
       passwordRef, 
-     onSubmit () {   
+     onSubmit () {  
+       let hash = sha256(password.value)
        let loginForm = {
           userName : username.value,
           password : password.value
@@ -88,35 +97,11 @@ export default {
       // api.post('gateway/gettoken', loginForm)
       $store.dispatch('auth/login', loginForm)
       .then((response) => {        
-        if(response == "success"){
-          $q.notify({
-          color: 'positive',
-          position: 'top',
-          message: 'Login Successfull',
-        })
+        if(response == "success"){         
         router.push('/')
         }
-        else{
-           $q.notify({
-          color: 'warning',
-          position: 'top',
-          message: 'Error Occured',
-        })
-        }
-      })
-      .catch(() => {
-         $q.notify({
-          color: 'warning',
-          position: 'top',
-          message: 'Check your Credentials',
-        })
-      })
-         
-      }, 
-      // toForgot(){
-      //    
-      //   router.push({ name: 'forgot' })
-      // },  
+      })         
+      },   
 
        onReset () {
         // name.value = null

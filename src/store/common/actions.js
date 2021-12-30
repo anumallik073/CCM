@@ -18,7 +18,6 @@ export const updateUserStateActions = ({ commit }, payload) => {
     commit('updateUserState', payload)
 }
 export const deleteUserStateActions = ({ commit }, id) => {
-    // 
     commit('deleteUserState', id)
 }
 
@@ -37,7 +36,11 @@ export const updateUser = async ({ commit, state }, payload) => {
           });      
      })
      .catch(()=>{
-        return "error"
+        Notify.create({
+            color: "negative",
+            position: "top",
+            message: "Error when update the user",
+          });      
      })  
 }
 

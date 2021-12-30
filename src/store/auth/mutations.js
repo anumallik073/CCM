@@ -7,13 +7,24 @@ export const storeAuth = (state, data) => {
     state.token = data
     localStorage.setItem('token', data)
   }
+  
+  export const storeUserDetials = (state, data) => {
+    state.userData = data
+  }
 
+  export const storePlans = (state, data) => {
+    state.plans = data
+  }  
   
 export const storePages = (state, data) => {
     // state.token = data
     // localStorage.setItem('token', data)
     state.pages = data
   }
+
+export const storeProgramID = (state, programID) => {
+   localStorage.setItem('pID', programID)
+}
 
 export const storeStateandCities = (state, data)=>{
     state.state = {

@@ -1,5 +1,6 @@
 import { boot } from 'quasar/wrappers'
 import axios from 'axios'
+import { Notify } from 'quasar';
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -7,13 +8,16 @@ import axios from 'axios'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'https://localhost:44386/gateway/' })//common 
+// const api = axios.create({ baseURL: 'https://localhost:44386/gateway/' })//common 
 // const api = axios.create({ baseURL: 'https://localhost:44349/' })//login 
 // const api = axios.create({ baseURL: 'https://localhost:44394/api/' })//Settings
 // const api = axios.create({ baseURL: 'https://localhost:44374/api/' })//catalogs 
 // const api = axios.create({ baseURL: 'https://localhost:44398/' })//Register
 // const api = axios.create({ baseURL: 'https://localhost:44392/api/' })//Payment
-// const api = axios.create({ baseURL: 'http://192.168.2.32:83/' })
+const api = process.env.DEV ? axios.create({ baseURL: 'http://192.168.2.32:90/api/' }) : 
+axios.create({ baseURL: 'https://dim.easyfastnow.com/gateway/' });
+
+console.log(process.env.DEV)
 
 export default boot(({ app, store, router }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
@@ -30,7 +34,11 @@ export default boot(({ app, store, router }) => {
     ){
       return req
     }
-    
+
+    //Attaching the ProgramID for every API calls
+    // req.data.programID = localStorage.getItem('pID')
+
+    //Adding the token for every api calls
     const token = store.getters['auth/getToken']
     req.headers.Authorization = `Bearer ${token}`
       return req
@@ -38,6 +46,22 @@ export default boot(({ app, store, router }) => {
 
   api.interceptors.response.use(async res=>{
     return res.data
+  },
+  err=>{
+    if(err.response.status == 401){
+      Notify.create({
+        color: 'negative',
+        position: 'top',
+        message: 'Invalid Credentials',
+      })
+    }
+    if(err.response.status == 500){
+      Notify.create({
+        color: 'negative',
+        position: 'top',
+        message: 'Server Error',
+      })
+    }
   })
 
   router.beforeEach((val)=>{

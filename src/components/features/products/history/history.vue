@@ -13,11 +13,12 @@
       >
         <template v-slot:top-right>
           <q-input
-            borderless
+            outlined
             dense
             debounce="300"
             v-model="filter"
             placeholder="Search"
+            style="min-width: 300px;"
           >
             <template v-slot:append>
               <q-icon name="search" />

@@ -10,5 +10,11 @@ export const getState = state => state.state;
 
 export const getCities = state => state.cities;
 
+export const getProgramID = state => localStorage.getItem('pID');
+
+export const getUser = state => state.userData;
+
+
+
 
 

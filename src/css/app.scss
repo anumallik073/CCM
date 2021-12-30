@@ -13,24 +13,24 @@ body {
   color: $text-color;
 }
 
-.settingsDiv{
+.settingsDiv {
   height: 70vh;
 }
 
-.q-tab-panel{
-  background-color: $background;
+.q-tab-panel {
+  // background-color: $background;
 }
 
 .text-color {
   color: $text-color;
 }
-.background-color{
+.background-color {
   background-color: $background;
 }
-.primary-text {
+.primary-color {
   color: $primary !important;
 }
-.modal-text{
+.modal-text {
   font-size: 12px;
 }
 
@@ -46,7 +46,7 @@ body {
   filter: blur(10px);
   background-color: $placeholder;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
@@ -63,7 +63,7 @@ body {
   background-color: $placeholder;
 }
 
-.full-width{
+.full-width {
   height: 47px;
 }
 //Overwritten Files
@@ -93,11 +93,20 @@ body {
 .light {
   color: $light-text;
 }
-
-// declare a class which applies it
-
+.primary-text{
+  color:$primary-text
+}
+.secondary-text{
+  color:$secondary-text
+}
+.border-color{
+  border: 1px solid $border-color;
+}
 .box-shadow {
   box-shadow: $boxshadow;
+}
+.box-shadow-menu {
+  box-shadow: 0 1px 8px 0 rgba(192, 192, 192, 0.5);
 }
 
 img {
@@ -128,65 +137,74 @@ a {
   color: $placeholder !important;
 }
 
-
 //Auth Start
 
-.authBody{
+.authBody {
   height: 100%;
   background-color: $background;
   overflow: hidden;
-  .q-splitter__before, .q-splitter__after{
+  .q-splitter__before,
+  .q-splitter__after {
     overflow: unset;
   }
-  .mt-50{
+  .mt-50 {
     margin-top: 55%;
   }
-  .q-panel-parent{
-      overflow: visible;
-      .scroll{
-        overflow: unset;
-      }
+  .q-panel-parent {
+    overflow: visible;
+    .scroll {
+      overflow: unset;
+    }
   }
-  .q-tab{
+  .q-tab {
     padding: 40px 20px;
-    .q-tab__icon{
+    .q-tab__icon {
       width: 40px;
       height: 40px;
       font-size: 40px;
     }
   }
-  .q-tab-panel{
+  .q-tab-panel {
     padding: unset;
   }
 
-  .loginLeftImg{
-       position: absolute;
-       top: -7%;
-       left: -9%;
-       width: 30%;
+  .loginLeftImg {
+    position: absolute;
+    top: -7%;
+    left: -9%;
+    width: 30%;
   }
-  .loginRightImg{
-     position: absolute;
-     bottom: -14%;
-     right: -7%;
-     width: 30%;
+  .loginRightImg {
+    position: absolute;
+    bottom: -14%;
+    right: -7%;
+    width: 30%;
   }
-  .splitterDiv{
-     height: 400px;
-     width: 80%;
+  .splitterDiv {
+    height: 400px;
+    width: 80%;
   }
-  .loginWidth{
+  .loginWidth {
     width: 85%;
   }
-  .forgotWidth{
+  .forgotWidth {
     width: 76%;
   }
-  .absolute-right{
+  .absolute-right {
     left: 0;
   }
-  .q-splitter__panel{
+  .q-splitter__panel {
     width: 10% !important;
   }
 }
 
 //Auth End
+
+// Table CSS
+table th {
+  color: $primary-text;
+}
+table td {
+  color: $secondary-text;
+}
+// Table CSS End

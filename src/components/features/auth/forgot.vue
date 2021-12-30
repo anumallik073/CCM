@@ -25,11 +25,11 @@
     <p class="text-h6 text-primary" v-if="isOnlyMail">Enter Your Mail</p>
     <q-input v-if="isOnlyMail"
         square outlined
-        v-model="email"
-        label="Your Email *"
-        hint="Email Name"
+        v-model="userName"
+        label="Your UserName *"
+        hint="User Name"
         lazy-rules
-        :rules="[ val => !!val || 'Email is missing', isValidEmail ]"
+        :rules="[ val => !!val || 'UserName is missing' ]"
       /> 
       <q-input v-if="!isOnlyMail"
         square outlined
@@ -88,13 +88,13 @@ export default {
     const cpassword = ref(null)
     const passwordRef = ref(null)
     const password = ref(null)
-    const email = ref(null)
+    const userName = ref(null)
     const isOnlyMail = ref(true)
     return {      
       cpassword,
       cpasswordRef,
       password,
-      email,
+      userName,
       passwordRef,
       isOnlyMail: $store.state.auth.isLocalForgot,      
       isValidEmail (val) {
@@ -103,27 +103,14 @@ export default {
        },  
       onSubmit () {   
        if(isOnlyMail){
-                $store.dispatch('auth/forgotMail', email.value)
+                $store.dispatch('auth/sendResetMail', {
+                  userName : userName.value,
+                  email : ''
+                })
        }
        else{
-                $store.dispatch('auth/forgotPassword', password.value)
-       }
-      //  let loginForm = {
-      //     userName : username.value,
-      //     password : password.value
-      //    };      
-      // api.post('gateway/gettoken', loginForm)
-      // .then((response) => {
-      //   $store.dispatch('auth/storeAuthActions',loginForm)
-      // })
-      // .catch(() => {
-      //   $q.notify({
-      //     color: 'negative',
-      //     position: 'top',
-      //     message: 'Loading failed',
-      //     icon: 'report_problem'
-      //   })
-      // })
+                $store.dispatch('auth/forgotPassword', password.value)                
+       }      
          
       },    
 

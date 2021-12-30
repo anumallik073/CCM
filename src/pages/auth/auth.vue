@@ -56,10 +56,15 @@
 </template>
 
 <script>
-  import { ref } from 'vue'
+  import { ref, onBeforeMount } from 'vue'
+  import { useStore } from "vuex";
 
 export default {
    setup () {
+     const $store = useStore();
+    onBeforeMount(() => {
+      $store.dispatch('auth/getProgramID', window.location.origin)
+    })
     return {
       tab: ref('login'),
       splitterModel: ref(20)

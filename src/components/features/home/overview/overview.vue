@@ -1,8 +1,8 @@
 <template>
     <div class="q-pa-md row items-start q-gutter-md">
-        <q-card class="my-card">
+        <q-card class="my-card box-shadow">
           <q-card-section>
-            <div class="text-h6">Overview</div>
+            <div class="text-h6 primary-text">Overview</div>
           </q-card-section>
     
           <q-separator />
@@ -14,19 +14,19 @@
                   color="secondary"
                   round
                   icon="mdi-book-open-page-variant-outline"
-                  class="q-ml-md primary-text"
+                  class="q-ml-md primary-color cursor-inherit"
                   style="font-size: 1.5rem"
                 >
                 </q-btn>
     
                 <q-item-section class="q-pl-lg">
-                  <q-item-label style="font-size:18px" class="overview-text">NUMBER OF CATALOGS</q-item-label>
+                  <q-item-label style="font-size:14px" class="overview-text">NUMBER OF CATALOGS</q-item-label>
                   <q-item-label style="font-size:24px" class="overview-num">{{ overViewDetails.catalogs }}</q-item-label>
                 </q-item-section>
               </div>
             </div>
             <div class="col-8">
-              <q-card-section class="overview flex">
+              <q-card-section class="overview flex q-pa-lg">
                 <q-item-section>
                   <q-item-label class="overview-text">NUMBER OF PRODUCTS</q-item-label>
                   <q-item-label class="overview-num">{{ overViewDetails.products }}</q-item-label>
@@ -45,7 +45,7 @@
     
               <q-separator inset />
     
-              <q-card-section class="overview flex">
+              <q-card-section class="overview flex q-pa-lg">
                 <q-item-section>
                   <q-item-label class="overview-text">CATALOGS DOWNLOADED</q-item-label>
                   <q-item-label class="overview-num">{{ overViewDetails.catalogs }}</q-item-label>
@@ -93,8 +93,10 @@ export default {
 .overview-num {
   font-weight: bolder;
   font-size: 20px;
+  color: $primary-text;
 }
 .overview-text {
-  font-size: 14px;
+  font-size: 12px;
+  color:$placeholder;
 }
 </style>

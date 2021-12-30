@@ -1,38 +1,41 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-btn
-      label="Manage Subscriptions"
-      icon="mdi-note-plus"
-      color="primary"
-      class=""
-      to="/products/subscriptions"
-    />
-    <div class="q-py-md">
+    <div class="q-pt-lg">
       <div class="q-gutter-y-md">
-        <q-tabs
-          v-model="tab"
-          narrow-indicator
-          dense
-          align="justify"
-          active-color="primary"
-          indicator-color="primary"
-          class="text-color box-shadow"
-          style="max-width: 500px"
-        >
-          <q-tab
-            :ripple="{ color: 'primary' }"
-            name="suppliers"
-            label="Suppliers"
-            class="q-py-sm"
+        <div class="q-pr-lg row justify-between items-center">
+          <q-tabs
+            v-model="tab"
+            narrow-indicator
+            dense
+            align="justify"
+            active-color="primary"
+            indicator-color="primary"
+            class="text-color box-shadow bg-white col"
+            style="max-width: 500px"
+          >
+            <q-tab
+              :ripple="{ color: 'primary' }"
+              name="suppliers"
+              label="Suppliers"
+              class="q-py-md"
+            />
+            <q-separator vertical inset />
+            <q-tab
+              :ripple="{ color: 'primary' }"
+              name="history"
+              label="History"
+              class="q-py-md"
+            />
+          </q-tabs>
+          <q-btn
+            label="Manage Subscriptions"
+            icon="mdi-note-plus"
+            color="primary"
+            class="col-sm-2 box-shadow"
+            to="/products/subscriptions"
+            style="width:20%; height:50px"
           />
-          <q-separator vertical inset />
-          <q-tab
-            :ripple="{ color: 'primary' }"
-            name="history"
-            label="History"
-            class="q-py-sm"
-          />
-        </q-tabs>
+        </div>
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="suppliers">
             <suppliers />

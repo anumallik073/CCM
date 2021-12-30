@@ -75,6 +75,7 @@
         :rules="[
           val => !!val || '* Required',
           val => val.length >=  8 || 'Please use minimum 8 character',
+          strongPassword
         ]"
       />
 </div>
@@ -290,14 +291,14 @@
       >
         <div class="q-pa-md">
           <q-list>           
-           <q-item tag="label" v-ripple v-for="plan in planDetails" :key="plan.planID">
+           <q-item tag="label" v-ripple v-for="plan in planDetails" :key="plan.id">
               <q-item-section avatar>
-                <q-radio v-model="selectedPlan" :val="plan.planID" color="primary" />
+                <q-radio v-model="selectedPlan" :val="plan.id" color="primary" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>{{plan.planName}}</q-item-label>
+                <q-item-label>{{plan.name}}</q-item-label>
                 <q-item-label captions>
-                  Price : <b>${{plan.price}}</b>, Catalogs : <b>{{plan.catalogLimit}}</b>, SKU's : <b>{{plan.sKUsLimit}}</b>
+                  Price : <b>${{plan.setupPrice}}</b>, Catalogs : <b>{{plan.detail.CatalogLimit}}</b>, SKU's : <b>{{plan.detail.sKUsLimit}}</b>
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -347,7 +348,7 @@
        <div class="col">
       <q-input
         filled
-        v-model="ccvNumber"
+        v-model="cvvNumber"
         label="CCV *"
         hint="CCV Number"
         lazy-rules
@@ -391,7 +392,7 @@
   </div>
 </template>
 <script>
-import { useQuasar } from 'quasar'
+import { LocalStorage, useQuasar } from 'quasar'
 import { ref, computed, onBeforeMount } from 'vue'
 import { useStore } from 'vuex'
 import { api } from 'boot/axios'
@@ -416,7 +417,7 @@ export default {
     const cMonthRef = ref(null)
     const cMonth = ref(null)
     const ccv = ref(null)
-    const ccvNumber = ref(null)
+    const cvvNumber = ref(null)
     const cvvRef = ref(null)
     const cNum = ref(null)
     const cName = ref(null)
@@ -444,22 +445,17 @@ export default {
     //Billing End
     const onCardSubmit = ()=>{
     let form_data = new FormData();
-    // form_data.append('cardName', cName.value)
-    // form_data.append('cardNumber', cNum.value)
-    // form_data.append('cvv', ccvNumber.value)
-    // form_data.append('cMonth', cMonth.value)  
-    // form_data.append('planID', selectedPlan.value)
      let cardDetails = {
        firstName : billFirstName.value,
        lastName : billLastName.value,
        creditCardNumber : cName.value,
        planID : selectedPlan.value,
        emailAddress : email.value,
-       cvv : cvv.value,
+       cvv : cvvNumber.value,
        expirationMonth : cMonth.value.split('/')[1],
        expirationYear : cMonth.value.split('/')[0]
      }
-     $store.dispatch('auth/payment', form_data)
+     $store.dispatch('auth/payment', cardDetails)
      .then((response) => {        
         if(response == "success"){
           $q.notify({
@@ -479,9 +475,8 @@ export default {
       })
     }
     const onAddressSubmit = ($event)=>{
+      let accountID = $store.state.auth.userData.accountID
       let addressDetails = {
-        //  FirstName : billFirstName.value,
-        //  LastName : billLastName.value,
          addressName : billAddressName.value,
          line1 : billLineOne.value,
          line2 : billLineTwo.value,
@@ -492,49 +487,72 @@ export default {
          stateName : $store.getters['auth/getState'].stateName,
          city : billCity.value.cityName,
          zipCode: zip.value,
-         accountID : 59
+         accountID : accountID
       }
       $store.dispatch('auth/addAddress', addressDetails)
-      done2.value = true;
-      step.value = 3
+      .then(val=>{
+        debugger
+        if(val){
+          done2.value = true;
+          step.value = 3
+          $store.dispatch('auth/getPlans', LocalStorage.getItem('pID'))
+        }
+        else{         
+          $q.notify({
+                color: 'warning',
+                position: 'top',
+                message: 'Adding Address Failed. Please Try again',
+          })
+        }
+      })
+      
     }
-    const onSubmit = ($event)=> {
-        
-        done1.value = true;
-        step.value = 2;
-        console.log(step)
+    const onSubmit = ($event)=> {              
         let signUpDetails = {
+          programID : parseInt(localStorage.getItem('pID')),
           name : name.value,
           userName : userName.value,
           email : email.value,
           password : password.value,
-          // Gender : preferred.value == 0 ? 'Male' : preferred.value == 1 ? 'Female' : 'Other',
-          // Date : date.value,
           companyName : companyName.value,
-          companyURL : companyURL.value,
+          companyURL : companyURL.value
         };
         $store.dispatch('auth/createUser', signUpDetails)
-      .then((response) => {       
-        $store.dispatch('auth/storeBasicDetails', response)
-        if(response == "success"){
-          $q.notify({
-          color: 'positive',
-          position: 'top',
-          message: 'User Created Successfully',
-        })
-        router.push('/auth')
-        }
-        else{
-           $q.notify({
-          color: 'warning',
-          position: 'top',
-          message: 'Signup Failed. Try Again',
-        })
-        }
-      })       
+        .then(val => {
+          debugger
+           if(val){
+              done1.value = true;
+              step.value = 2;
+           }
+           else{
+               $q.notify({
+                color: 'warning',
+                position: 'top',
+                message: 'Signup Failed. Try Again',
+               })
+           }  
+        })    
+      // .then((response) => {       
+      //   $store.dispatch('auth/storeBasicDetails', response)
+      //   if(response == "success"){
+      //     $q.notify({
+      //     color: 'positive',
+      //     position: 'top',
+      //     message: 'User Created Successfully',
+      //   })
+      //   router.push('/auth')
+      //   }
+      //   else{
+      //      $q.notify({
+      //     color: 'warning',
+      //     position: 'top',
+      //     message: 'Signup Failed. Try Again',
+      //   })
+      //   }
+      // })       
     }
     onBeforeMount(() => {
-       $store.dispatch('auth/getCountries')
+       $store.dispatch('auth/getCountries')       
     })
     // step = ref(1)
     // cstep = ref(1)
@@ -543,7 +561,7 @@ export default {
       email, userName, password, basicForm,
       phoneNumber, companyName, companyURL, cvvRef,
       passwordRef, genderRef, dateRef,cMonthRef, cMonth,  done1,
-      done2, done3, done4, ccv, cName, cNum, ccvNumber, billFirstName, billLastName, billAddressName, billCountry,
+      done2, done3, done4, ccv, cName, cNum, cvvNumber, billFirstName, billLastName, billAddressName, billCountry,
       billCity, billLineOne, billLineTwo, billPhone,
       preferred, accepted: ref([]), step,
       selectedPlan,zip,
@@ -552,6 +570,43 @@ export default {
       billState : computed(()=> $store.getters['auth/getState'].stateName),      
       cities : computed(()=> $store.getters['auth/getCities']),      
       //credit card validation
+      strongPassword(val){
+        let password_length = val.length;
+        const format = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+        // let contains_eight_characters;
+        // if (password_length > 8) {
+        //   contains_eight_characters = true;
+        // } else {
+        //   contains_eight_characters = false;
+        // }
+        
+        let contains_number = /\d/.test(val);
+        let contains_uppercase = /[A-Z]/.test(val);
+        let contains_special_character = format.test(val);
+
+        //   let contains_number = /\d/.test(val);
+        // let contains_uppercase = /[A-Z]/.test(val);
+        // let contains_special_character = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val);
+        if(!contains_number){
+            return "Include the number"
+        }
+        if(!contains_uppercase){
+            return "Include the UpperCase"
+        }
+        if(!contains_special_character){
+            return "Include the Special Charectors"
+        }
+        
+        if (contains_special_character === true &&
+            contains_uppercase === true &&
+            contains_number === true) {
+            // valid_password = true;			
+            return true
+        } else {
+          // valid_password = false;
+          return false
+        }
+      },
       cardValidation(val){
           var visaRegEx = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
           var mastercardRegEx = /^(?:5[1-5][0-9]{14})$/;
@@ -591,8 +646,9 @@ export default {
       date: ref('2019/02/01'),
       validateUserName(type){
         let val = {
+          programID : localStorage.getItem('pID'),
           value : type == 'email' ? email.value : userName.value,
-          type : type
+          type : type == 'email' ? 1 : 0
         } 
         $store.dispatch('auth/validateUser', val)
         .then(res=>{

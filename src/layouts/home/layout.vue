@@ -1,8 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf" class="">
     <q-header
-      elevated
-      class="bg-white row no-wrap justify-between items-center box-shadow"
+      class="bg-white row no-wrap justify-between items-center box-shadow-menu"
     >
       <q-toolbar class="col-md-3">
         <q-toolbar-title>
@@ -21,11 +20,11 @@
         >
           <q-route-tab
             v-for="page in pages"
-            :key="page.pageId"
+            :key="page.pageID"
             :ripple="{ color: 'secondary' }"
-            :name="page.ModuleName"
-            :label="page.ModuleName"
-            :to="page.PageUrl"
+            :name="page.name"
+            :label="page.name"
+            :to="page.route"
           />
         </q-tabs>
       </div>
@@ -102,13 +101,17 @@
     </q-header>
 
     <q-page-container>
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition appear name="fade" mode="out-in" duration="250">
+          <component :is="Component"></component>
+        </transition>
+      </router-view>
     </q-page-container>
   </q-layout>
 </template>
 <script>
 import { useQuasar } from "quasar";
-import { ref, computed, onBeforeMount } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 
@@ -117,12 +120,9 @@ export default {
     const $store = useStore();
     const $q = useQuasar();
     const router = useRouter();
-    onBeforeMount(() => {
-       $store.dispatch('auth/getPages')              
-    })
     return {
-      tab:ref('dashboard'),
-      pages: computed(()=> $store.getters['auth/getPages']),      
+      tab: ref("dashboard"),
+      pages: computed(() => $store.getters["auth/getPages"]),
       logout() {
         $store.dispatch("auth/logout").then((val) => {
           $q.notify({
@@ -139,4 +139,12 @@ export default {
 </script>
 
 <style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>

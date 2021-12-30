@@ -6,9 +6,9 @@
 
       <template v-slot:before>
         <q-tabs
+          class="text-primary bg-white"
           v-model="tab"
           vertical
-          class="text-primary"
           active-color="primary"
           indicator-color="primary"
         >
@@ -62,7 +62,6 @@ setup () {
   }
 }
 </script>
-
-<style>
+<style lang="scss" scoped>
 
 </style>
