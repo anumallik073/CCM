@@ -1,0 +1,192 @@
+// app global css in SCSS form
+
+@font-face {
+  font-family: nexa;
+  src: url("../assets/fonts/Nexa_Bold.otf");
+}
+@font-face {
+  font-family: nexa-light;
+  src: url("../assets/fonts/Nexa_Light.otf");
+}
+
+body {
+  color: $text-color;
+}
+
+.settingsDiv{
+  height: 70vh;
+}
+
+.q-tab-panel{
+  background-color: $background;
+}
+
+.text-color {
+  color: $text-color;
+}
+.background-color{
+  background-color: $background;
+}
+.primary-text {
+  color: $primary !important;
+}
+.modal-text{
+  font-size: 12px;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 4px;
+  -webkit-filter: blur(10px);
+  filter: blur(10px);
+  background-color: $placeholder;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  -webkit-filter: blur(10px);
+  filter: blur(10px);
+  background-color: $placeholder;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 4px;
+  -webkit-filter: blur(10px);
+  filter: blur(10px);
+  background-color: $placeholder;
+}
+
+.full-width{
+  height: 47px;
+}
+//Overwritten Files
+//Form Height
+.q-gutter-y-md > *,
+.q-gutter-md > * {
+  margin-top: 10px;
+}
+
+.q-tabs--vertical .q-tab__indicator {
+  width: 8px;
+}
+
+.text-h3 {
+  margin-bottom: 8px;
+  font-size: 36px;
+  font-family: $font-family-title;
+}
+.text-p {
+  font-family: $font-family-light;
+}
+
+.text-light {
+  color: $white-light-text;
+}
+
+.light {
+  color: $light-text;
+}
+
+// declare a class which applies it
+
+.box-shadow {
+  box-shadow: $boxshadow;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: $primary;
+  opacity: 0.8;
+  transition: 0.3s;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+::-webkit-input-placeholder {
+  /* Edge */
+  color: $placeholder !important;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: $placeholder !important;
+}
+
+::placeholder {
+  color: $placeholder !important;
+}
+
+
+//Auth Start
+
+.authBody{
+  height: 100%;
+  background-color: $background;
+  overflow: hidden;
+  .q-splitter__before, .q-splitter__after{
+    overflow: unset;
+  }
+  .mt-50{
+    margin-top: 55%;
+  }
+  .q-panel-parent{
+      overflow: visible;
+      .scroll{
+        overflow: unset;
+      }
+  }
+  .q-tab{
+    padding: 40px 20px;
+    .q-tab__icon{
+      width: 40px;
+      height: 40px;
+      font-size: 40px;
+    }
+  }
+  .q-tab-panel{
+    padding: unset;
+  }
+
+  .loginLeftImg{
+       position: absolute;
+       top: -7%;
+       left: -9%;
+       width: 30%;
+  }
+  .loginRightImg{
+     position: absolute;
+     bottom: -14%;
+     right: -7%;
+     width: 30%;
+  }
+  .splitterDiv{
+     height: 400px;
+     width: 80%;
+  }
+  .loginWidth{
+    width: 85%;
+  }
+  .forgotWidth{
+    width: 76%;
+  }
+  .absolute-right{
+    left: 0;
+  }
+  .q-splitter__panel{
+    width: 10% !important;
+  }
+}
+
+//Auth End
